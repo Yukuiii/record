@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- 移动端状态栏 -->
-    <div class="bg-white px-4 py-2 flex justify-between items-center text-sm font-medium">
+    <!-- <div class="bg-white px-4 py-2 flex justify-between items-center text-sm font-medium">
       <div class="flex items-center space-x-1">
         <span class="text-black">17:23</span>
       </div>
@@ -19,29 +19,10 @@
         </svg>
         <div class="bg-green-500 text-white text-xs px-1.5 py-0.5 rounded">89%</div>
       </div>
-    </div>
+    </div> -->
 
-    <!-- 头部导航 -->
-    <div class="bg-white px-4 py-3 flex justify-between items-center border-b border-gray-100">
-      <div class="flex items-center space-x-6">
-        <h1 class="text-xl font-bold text-gray-900">记录</h1>
-        <span class="text-gray-500">洞察</span>
-      </div>
-      <div class="flex items-center space-x-4">
-        <div class="flex items-center space-x-1">
-          <span class="text-gray-700">全部</span>
-          <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </div>
-        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-          </svg>
-        </div>
-      </div>
-    </div>
+    <!-- 头部导航组件 -->
+    <LayoutHeaderNav />
 
     <!-- 日历组件 -->
     <div class="bg-blue-50 mx-4 mt-4 rounded-2xl p-4">
@@ -146,13 +127,6 @@
       </div>
     </div>
 
-    <!-- 底部上拉指示器 -->
-    <div class="flex justify-center py-6">
-      <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-      </svg>
-    </div>
-
     <!-- 底部输入区域 -->
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
       <div class="flex items-center space-x-3">
@@ -172,11 +146,6 @@
             </path>
           </svg>
         </button>
-      </div>
-
-      <!-- 底部指示条 -->
-      <div class="flex justify-center mt-2">
-        <div class="w-32 h-1 bg-black rounded-full"></div>
       </div>
     </div>
 
