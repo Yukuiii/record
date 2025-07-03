@@ -53,10 +53,11 @@
       <!-- 日历网格 -->
       <div class="grid grid-cols-10 gap-1.5">
         <!-- 日期数字 -->
-        <div v-for="day in calendarDays" :key="day.date" :class="[
-          'h-7 w-7 flex items-center justify-center text-sm font-medium rounded-lg',
-          day.isToday ? 'bg-blue-500 text-white' :
-            day.isFuture ? 'bg-white text-gray-400' : 'bg-white text-gray-800'
+        <div v-for="day in calendarDays" :key="day.date" @click="handleDateClick(day)" :class="[
+          'h-7 w-7 flex items-center justify-center text-sm font-medium rounded-lg transition-all duration-200',
+          selectedDate === day.day ? 'bg-blue-500 text-white' :
+            (day.isToday && selectedDate === null) ? 'bg-blue-500 text-white' :
+              day.isFuture ? 'bg-white text-gray-400' : 'bg-white text-gray-800 hover:bg-blue-50 cursor-pointer active:scale-95'
         ]">
           {{ day.day }}
         </div>
@@ -253,6 +254,33 @@ const generateCalendarDays = () => {
 
 // 日历数据
 const calendarDays = ref(generateCalendarDays())
+
+// 选中的日期
+const selectedDate = ref(null)
+
+// 处理日期点击事件
+const handleDateClick = (day) => {
+  // 只有今天和之前的日期可以点击
+  if (day.isFuture) {
+    return // 未来日期不可点击
+  }
+
+  // 设置选中的日期
+  selectedDate.value = day.day
+
+  console.log('点击了日期:', day.date)
+  console.log('日期信息:', {
+    年: currentDate.year,
+    月: currentDate.month,
+    日: day.day,
+    是否今天: day.isToday,
+    选中状态: selectedDate.value === day.day
+  })
+
+  // 可以在这里添加更多功能，比如：
+  // navigateTo(`/records/${day.date}`) // 跳转到该日期的记录页面
+  // 或者触发一个事件来显示该日期的记录
+}
 </script>
 
 <style scoped>
