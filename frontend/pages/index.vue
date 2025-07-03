@@ -46,7 +46,7 @@
     <!-- 日历组件 -->
     <div class="bg-blue-50 mx-4 mt-4 rounded-2xl p-4">
       <div class="flex justify-between items-center mb-2">
-        <h2 class="text-lg font-semibold text-gray-800">2025年6月</h2>
+        <h2 class="text-lg font-semibold text-gray-800">{{ currentDate.year }}年{{ currentDate.month }}月</h2>
       </div>
       <p class="text-sm text-gray-600 mb-3">记点什么好呢</p>
 
@@ -67,7 +67,7 @@
     <div class="px-4 mt-6 mb-4">
       <div class="flex items-center space-x-2">
         <Icon name="material-symbols:calendar-today-outline-rounded" size="26" class="text-blue-500" />
-        <span class="text-lg font-medium text-gray-800">今天 6月26日(周四)</span>
+        <span class="text-lg font-medium text-gray-800">今天 {{ todayText }}</span>
       </div>
     </div>
 
@@ -206,11 +206,30 @@ useHead({
   ]
 })
 
+// 获取当前日期信息
+const getCurrentDate = () => {
+  const now = new Date()
+  return {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1, // getMonth() 返回 0-11，需要 +1
+    day: now.getDate(),
+    weekDay: now.getDay() // 0=周日, 1=周一, ..., 6=周六
+  }
+}
+
+// 获取星期几的中文表示
+const getWeekDayText = (weekDay) => {
+  const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+  return weekDays[weekDay]
+}
+
+// 生成今天的文本显示
+const currentDate = getCurrentDate()
+const todayText = `${currentDate.month}月${currentDate.day}日(${getWeekDayText(currentDate.weekDay)})`
+
 // 生成日历数据
 const generateCalendarDays = () => {
-  const year = 2025
-  const month = 6 // 6月
-  const today = 26
+  const { year, month, day: today } = currentDate
 
   // 获取当月最后一天，确定这个月有多少天
   const lastDay = new Date(year, month, 0)

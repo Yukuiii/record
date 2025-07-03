@@ -98,4 +98,5 @@ Thumbs.db
 tmp/
 temp/
 
+# Documentation
 requirements.md
