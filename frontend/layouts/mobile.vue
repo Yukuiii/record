@@ -13,7 +13,6 @@
 
 <style scoped>
 .mobile-layout {
-  @apply min-h-screen bg-gray-50;
   /* 移动端专用样式 */
   -webkit-overflow-scrolling: touch;
   overflow-x: hidden;

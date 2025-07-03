@@ -80,50 +80,6 @@
         <div class="flex items-center justify-between mb-3">
           <span class="text-blue-600 text-sm">自动记录也超方便 点我去体验 ></span>
         </div>
-        <div class="grid grid-cols-3 gap-3">
-          <!-- 睡眠截屏 -->
-          <div class="bg-white rounded-2xl p-4 text-center shadow-sm">
-            <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-2 relative">
-              <!-- 睡觉的人 -->
-              <div class="w-8 h-6 bg-orange-300 rounded-full relative">
-                <!-- 头部 -->
-                <div class="w-4 h-4 bg-orange-400 rounded-full absolute -top-1 left-1"></div>
-                <!-- Z字符表示睡觉 -->
-                <div class="absolute -top-2 -right-1 text-xs text-blue-500 font-bold">Z</div>
-              </div>
-            </div>
-            <p class="text-xs text-gray-600">就一般睡眠截屏</p>
-          </div>
-
-          <!-- 小白点截屏 -->
-          <div class="bg-white rounded-2xl p-4 text-center shadow-sm">
-            <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-2 relative">
-              <!-- 手指点击 -->
-              <div class="w-6 h-8 bg-orange-300 rounded-t-full relative">
-                <!-- 指尖 -->
-                <div class="w-2 h-2 bg-orange-400 rounded-full absolute bottom-0 left-2"></div>
-                <!-- 点击效果 -->
-                <div class="absolute -bottom-1 left-1 w-4 h-1 bg-blue-500 rounded-full opacity-60"></div>
-              </div>
-            </div>
-            <p class="text-xs text-gray-600">小白点截屏</p>
-          </div>
-
-          <!-- iPhone快捷键 -->
-          <div class="bg-white rounded-2xl p-4 text-center shadow-sm">
-            <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-2 relative">
-              <!-- 手机 -->
-              <div class="w-6 h-9 bg-gray-700 rounded-lg relative">
-                <!-- 屏幕 -->
-                <div class="w-5 h-7 bg-blue-400 rounded-md absolute top-1 left-0.5"></div>
-                <!-- 按键指示 -->
-                <div class="absolute -top-1 -right-1 w-2 h-2 bg-orange-400 rounded-full"></div>
-                <div class="absolute -bottom-1 -right-1 w-2 h-2 bg-orange-400 rounded-full"></div>
-              </div>
-            </div>
-            <p class="text-xs text-gray-600">iPhone快捷键</p>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -140,11 +96,7 @@
             class="w-full bg-transparent text-gray-600 placeholder-gray-400 outline-none">
         </div>
         <button class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z">
-            </path>
-          </svg>
+          <Icon name="material-symbols:send-outline" size="23" class="text-white" />
         </button>
       </div>
     </div>
