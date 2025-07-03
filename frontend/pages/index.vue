@@ -48,7 +48,6 @@
       <div class="flex justify-between items-center mb-2">
         <h2 class="text-lg font-semibold text-gray-800">{{ currentDate.year }}年{{ currentDate.month }}月</h2>
       </div>
-      <p class="text-sm text-gray-600 mb-3">记点什么好呢</p>
 
       <!-- 日历网格 -->
       <div class="grid grid-cols-10 gap-1.5">
@@ -67,32 +66,26 @@
     <!-- 今天日期 -->
     <div class="px-4 mt-6 mb-4">
       <div class="flex items-center space-x-2">
-        <Icon name="material-symbols:calendar-today-outline-rounded" size="26" class="text-blue-500" />
+        <Icon name="material-symbols:calendar-today-outline-rounded" size="24" class="text-blue-500" />
         <span class="text-lg font-medium text-gray-800">今天 {{ todayText }}</span>
+      </div>
+      <!-- 今日收支统计 -->
+      <div class="ml-8">
+        <span class="text-sm text-gray-600">支出 ¥{{ todayExpense }} | 收入 ¥{{ todayIncome }}</span>
       </div>
     </div>
 
     <!-- 记录卡片 -->
     <div class="px-4 space-y-4">
-      <!-- 胖虎晚睡都能记录卡片 -->
       <div class="bg-blue-50 rounded-2xl p-4 flex items-start space-x-3">
         <div class="flex-shrink-0">
-          <!-- 胖虎头像 -->
-          <div class="w-14 h-14 bg-orange-400 rounded-full flex items-center justify-center relative">
-            <!-- 胖虎的脸 -->
-            <div class="w-12 h-12 bg-orange-500 rounded-full relative">
-              <!-- 眼睛 -->
-              <div class="absolute top-3 left-2 w-1.5 h-1.5 bg-black rounded-full"></div>
-              <div class="absolute top-3 right-2 w-1.5 h-1.5 bg-black rounded-full"></div>
-              <!-- 嘴巴 -->
-              <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-2 h-1 bg-black rounded-full"></div>
-            </div>
-            <!-- 蓝色衣服 -->
-            <div class="absolute bottom-0 w-10 h-4 bg-blue-500 rounded-b-full"></div>
+          <!-- 人物形象 -->
+          <div class="w-28 h-38">
+            <img src="https://wp-cdn.yukuii.top/v2/zu7m9gq.png" alt="人物形象" class="w-full h-full object-cover" />
           </div>
         </div>
         <div class="flex-1">
-          <h3 class="text-blue-600 font-medium mb-2">胖虎晚睡都能记录:</h3>
+          <h3 class="text-blue-600 font-medium mb-2">记点什么好呢:</h3>
           <div class="space-y-1 text-sm text-gray-700">
             <p>"今天午饭30元，用的支付宝"</p>
             <p>"明天下午6点开会，提前5分钟提醒我"</p>
@@ -257,6 +250,10 @@ const calendarDays = ref(generateCalendarDays())
 
 // 选中的日期
 const selectedDate = ref(null)
+
+// 今日收支数据
+const todayExpense = ref('0.00')
+const todayIncome = ref('0.00')
 
 // 处理日期点击事件
 const handleDateClick = (day) => {
