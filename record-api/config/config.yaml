@@ -1,0 +1,22 @@
+server:
+  port: 8082
+  mode: debug
+
+database:
+  # 替换为您的Supabase项目信息
+  host: aws-0-ap-southeast-1.pooler.supabase.com
+  port: 6543
+  user: postgres.ktmbdybmqfxoxfbhouhe
+  password: SR1mvNB8tFYPyPDz
+  dbname: postgres
+  sslmode: require
+
+jwt:
+  secret: record-yukuii
+  expiretime: 24
+
+# Supabase配置说明：
+# 1. host: 在Supabase Dashboard -> Settings -> Database -> Connection info 中找到
+# 2. password: 您在创建Supabase项目时设置的数据库密码
+# 3. dbname: Supabase默认使用 "postgres" 作为数据库名
+# 4. sslmode: Supabase要求使用SSL连接，设置为 "require"

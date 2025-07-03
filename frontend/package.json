@@ -1,0 +1,37 @@
+{
+  "name": "record-frontend",
+  "version": "1.0.0",
+  "description": "个人记账应用前端界面",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "type-check": "nuxt typecheck"
+  },
+  "keywords": [
+    "nuxt",
+    "vue",
+    "javascript",
+    "accounting",
+    "finance"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@nuxt/icon": "^1.14.0",
+    "@tailwindcss/vite": "^4.1.10",
+    "nuxt": "^3.17.5",
+    "tailwindcss": "^4.1.10",
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@nuxt/eslint-config": "^0.2.0",
+    "eslint": "^8.57.0"
+  }
+}
