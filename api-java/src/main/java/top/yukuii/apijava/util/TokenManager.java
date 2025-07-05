@@ -4,28 +4,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import top.yukuii.apijava.common.BusinessException;
 import top.yukuii.apijava.model.entity.User;
 import top.yukuii.apijava.model.vo.LoginResponseVO;
-import top.yukuii.apijava.service.TokenBlacklistService;
 
 /**
  * Token管理工具类
  * 统一封装所有Token相关操作
  */
 @Slf4j
-@Component
-@RequiredArgsConstructor
 public class TokenManager {
-
-    private final TokenBlacklistService tokenBlacklistService;
 
     /**
      * 用户登录 - 创建Token
@@ -33,7 +26,7 @@ public class TokenManager {
      * @param user 用户信息
      * @return 登录响应对象
      */
-    public LoginResponseVO login(User user) {
+    public static LoginResponseVO login(User user) {
         return login(user, null);
     }
 
@@ -44,7 +37,7 @@ public class TokenManager {
      * @param extraClaims 额外声明
      * @return 登录响应对象
      */
-    public LoginResponseVO login(User user, Map<String, Object> extraClaims) {
+    public static LoginResponseVO login(User user, Map<String, Object> extraClaims) {
         try {
             // 创建Token
             String token = JwtUtil.createToken(user.getUserId(), extraClaims);
@@ -76,7 +69,7 @@ public class TokenManager {
      * 
      * @param token JWT Token
      */
-    public void logout(String token) {
+    public static void logout(String token) {
         try {
             // 验证Token是否有效
             if (!isTokenValid(token)) {
@@ -84,12 +77,12 @@ public class TokenManager {
             }
 
             // 检查Token是否已经在黑名单中
-            if (tokenBlacklistService.isBlacklisted(token)) {
+            if (TokenBlacklistUtil.isBlacklisted(token)) {
                 throw new BusinessException("Token已失效");
             }
 
             // 将Token加入黑名单
-            tokenBlacklistService.addToBlacklist(token);
+            TokenBlacklistUtil.addToBlacklist(token);
             
             // 获取用户ID用于日志记录
             String userId = getUserIdFromToken(token);
@@ -109,7 +102,7 @@ public class TokenManager {
      * @param oldToken 原Token
      * @return 新的登录响应对象
      */
-    public LoginResponseVO refreshToken(String oldToken) {
+    public static LoginResponseVO refreshToken(String oldToken) {
         try {
             // 验证原Token是否有效
             if (!isTokenValid(oldToken)) {
@@ -137,7 +130,7 @@ public class TokenManager {
      * @param token JWT Token
      * @return 是否有效
      */
-    public boolean isTokenValid(String token) {
+    public static boolean isTokenValid(String token) {
         try {
             // 1. 验证Token格式和签名
             if (!JwtUtil.validateToken(token)) {
@@ -145,7 +138,7 @@ public class TokenManager {
             }
 
             // 2. 检查是否在黑名单中
-            if (tokenBlacklistService.isBlacklisted(token)) {
+            if (TokenBlacklistUtil.isBlacklisted(token)) {
                 return false;
             }
 
@@ -167,7 +160,7 @@ public class TokenManager {
      * @param token JWT Token
      * @return 用户ID
      */
-    public String getUserIdFromToken(String token) {
+    public static String getUserIdFromToken(String token) {
         try {
             return JwtUtil.getUserId(token);
         } catch (Exception e) {
@@ -181,7 +174,7 @@ public class TokenManager {
      *
      * @return 当前请求的JWT Token，如果没有返回null
      */
-    public String getCurrentToken() {
+    public static String getCurrentToken() {
         try {
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             if (attributes != null) {
@@ -200,7 +193,7 @@ public class TokenManager {
      *
      * @return 用户ID，如果未登录返回null
      */
-    public String getCurrentUserId() {
+    public static String getCurrentUserId() {
         return UserContext.getCurrentUserId();
     }
 
@@ -210,7 +203,7 @@ public class TokenManager {
      * @return 用户ID
      * @throws BusinessException 如果用户未登录
      */
-    public String requireCurrentUserId() {
+    public static String requireCurrentUserId() {
         String userId = getCurrentUserId();
         if (userId == null) {
             throw new BusinessException("用户未登录");
@@ -223,7 +216,7 @@ public class TokenManager {
      *
      * @return true表示已登录，false表示未登录
      */
-    public boolean isLoggedIn() {
+    public static boolean isLoggedIn() {
         return UserContext.isLoggedIn();
     }
 
@@ -232,7 +225,7 @@ public class TokenManager {
      *
      * @return 过期时间，如果获取失败返回null
      */
-    public Date getCurrentTokenExpiration() {
+    public static Date getCurrentTokenExpiration() {
         String token = getCurrentToken();
         if (token != null) {
             try {
@@ -249,7 +242,7 @@ public class TokenManager {
      *
      * @return 角色数组，如果获取失败返回空数组
      */
-    public String[] getCurrentUserRoles() {
+    public static String[] getCurrentUserRoles() {
         String token = getCurrentToken();
         if (token != null) {
             return getRolesFromToken(token);
@@ -263,7 +256,7 @@ public class TokenManager {
      * @return 新的登录响应对象
      * @throws BusinessException 如果刷新失败
      */
-    public LoginResponseVO refreshCurrentToken() {
+    public static LoginResponseVO refreshCurrentToken() {
         String token = getCurrentToken();
         if (token == null) {
             throw new BusinessException("当前请求中没有Token");
@@ -276,7 +269,7 @@ public class TokenManager {
      *
      * @throws BusinessException 如果登出失败
      */
-    public void logoutCurrent() {
+    public static void logoutCurrent() {
         String token = getCurrentToken();
         if (token == null) {
             throw new BusinessException("当前请求中没有Token");
@@ -290,7 +283,7 @@ public class TokenManager {
      * @param authHeader Authorization头的值
      * @return 提取的Token，如果格式不正确返回null
      */
-    public String extractToken(String authHeader) {
+    public static String extractToken(String authHeader) {
         return JwtUtil.extractToken(authHeader);
     }
 
@@ -300,7 +293,7 @@ public class TokenManager {
      * @param token JWT Token
      * @return 过期时间
      */
-    public Date getTokenExpiration(String token) {
+    public static Date getTokenExpiration(String token) {
         try {
             return JwtUtil.getExpiration(token);
         } catch (Exception e) {
@@ -316,7 +309,7 @@ public class TokenManager {
      * @param roles 用户角色列表
      * @return 登录响应对象
      */
-    public LoginResponseVO loginWithRoles(User user, String... roles) {
+    public static LoginResponseVO loginWithRoles(User user, String... roles) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", roles);
         return login(user, claims);
@@ -329,7 +322,7 @@ public class TokenManager {
      * @return 角色数组
      */
     @SuppressWarnings("unchecked")
-    public String[] getRolesFromToken(String token) {
+    public static String[] getRolesFromToken(String token) {
         try {
             var claims = JwtUtil.parseToken(token);
             var roles = claims.get("roles");
@@ -341,5 +334,12 @@ public class TokenManager {
             log.warn("从Token获取角色信息失败: {}", e.getMessage());
             return new String[0];
         }
+    }
+
+    /**
+     * 私有构造函数，防止实例化
+     */
+    private TokenManager() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 }

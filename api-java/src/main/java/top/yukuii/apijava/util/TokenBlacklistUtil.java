@@ -1,4 +1,4 @@
-package top.yukuii.apijava.service;
+package top.yukuii.apijava.util;
 
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
@@ -6,33 +6,29 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.stereotype.Service;
-
 import lombok.extern.slf4j.Slf4j;
-import top.yukuii.apijava.util.JwtUtil;
 
 /**
- * Token黑名单服务
+ * Token黑名单工具类
  * 用于管理已登出的Token
  */
 @Slf4j
-@Service
-public class TokenBlacklistService {
+public class TokenBlacklistUtil {
 
     /**
      * Token黑名单存储（生产环境建议使用Redis）
      * Key: Token, Value: 过期时间
      */
-    private final ConcurrentHashMap<String, Long> blacklist = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Long> blacklist = new ConcurrentHashMap<>();
 
     /**
      * 定时清理过期Token的调度器
      */
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    public TokenBlacklistService() {
+    static {
         // 每小时清理一次过期的Token
-        scheduler.scheduleAtFixedRate(this::cleanExpiredTokens, 1, 1, TimeUnit.HOURS);
+        scheduler.scheduleAtFixedRate(TokenBlacklistUtil::cleanExpiredTokens, 1, 1, TimeUnit.HOURS);
     }
 
     /**
@@ -40,7 +36,7 @@ public class TokenBlacklistService {
      * 
      * @param token JWT Token
      */
-    public void addToBlacklist(String token) {
+    public static void addToBlacklist(String token) {
         try {
             // 获取Token的过期时间
             Date expiration = JwtUtil.getExpiration(token);
@@ -60,7 +56,7 @@ public class TokenBlacklistService {
      * @param token JWT Token
      * @return true表示在黑名单中（已登出），false表示不在黑名单中
      */
-    public boolean isBlacklisted(String token) {
+    public static boolean isBlacklisted(String token) {
         Long expiration = blacklist.get(token);
         if (expiration == null) {
             return false;
@@ -78,7 +74,7 @@ public class TokenBlacklistService {
     /**
      * 清理过期的Token
      */
-    private void cleanExpiredTokens() {
+    private static void cleanExpiredTokens() {
         long currentTime = System.currentTimeMillis();
         int sizeBefore = blacklist.size();
 
@@ -96,15 +92,22 @@ public class TokenBlacklistService {
     /**
      * 获取黑名单大小（用于监控）
      */
-    public int getBlacklistSize() {
+    public static int getBlacklistSize() {
         return blacklist.size();
     }
 
     /**
      * 清空黑名单（谨慎使用）
      */
-    public void clearBlacklist() {
+    public static void clearBlacklist() {
         blacklist.clear();
         log.warn("黑名单已被清空");
+    }
+
+    /**
+     * 私有构造函数，防止实例化
+     */
+    private TokenBlacklistUtil() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 }
