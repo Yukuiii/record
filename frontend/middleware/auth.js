@@ -3,8 +3,11 @@
  * 检查用户是否已登录，未登录则重定向到登录页
  */
 
-export default defineNuxtRouteMiddleware((to, from) => {
-  const { isLoggedIn } = useAuth();
+export default defineNuxtRouteMiddleware(async (to, from) => {
+  const { isLoggedIn, checkAuth } = useAuth();
+
+  // 先检查认证状态，确保状态是最新的
+  await checkAuth();
 
   // 如果用户未登录且不是访问认证相关页面，则重定向到登录页
   if (!isLoggedIn.value && !to.path.startsWith("/auth")) {

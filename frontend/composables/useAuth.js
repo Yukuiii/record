@@ -8,7 +8,6 @@ export const useAuth = () => {
 
   // 用户状态
   const user = ref(null);
-  const isLoggedIn = computed(() => !!user.value);
   const isLoading = ref(false);
 
   // 认证 token
@@ -17,6 +16,11 @@ export const useAuth = () => {
     maxAge: 60 * 60 * 24 * 7, // 7 天
     secure: true,
     sameSite: "strict",
+  });
+
+  // 基于 token 和 user 状态计算登录状态
+  const isLoggedIn = computed(() => {
+    return !!token.value && !!user.value;
   });
 
   // 登录
@@ -106,8 +110,13 @@ export const useAuth = () => {
 
   // 检查认证状态
   const checkAuth = async () => {
+    // 如果有 token 但没有用户信息，尝试获取用户信息
     if (token.value && !user.value) {
       await fetchUser();
+    }
+    // 如果没有 token，确保清除用户状态
+    else if (!token.value && user.value) {
+      user.value = null;
     }
   };
 

@@ -34,10 +34,9 @@ export const useApi = () => {
     try {
       const response = await fetch(url, requestOptions);
 
-      if (!response.ok) {
+      if (response.code !== 200) {
         const errorData = await response.json().catch(() => ({}));
         const errorMessage = errorData.message || `HTTP ${response.status}`;
-
         // 自动显示错误 toast
         ElMessage.error(errorMessage);
         throw new Error(errorMessage);
@@ -46,19 +45,7 @@ export const useApi = () => {
       const data = await response.json();
       return data;
     } catch (error) {
-      // 网络错误等其他异常
-      if (error.name === "TypeError" && error.message.includes("fetch")) {
-        // 网络连接错误
-        if (import.meta.client) {
-          ElMessage.error("网络请求失败，请检查网络连接");
-        }
-      } else if (!error.message.includes("HTTP")) {
-        // 其他未处理的错误
-        if (import.meta.client) {
-          ElMessage.error(error.message || "请求失败");
-        }
-      }
-      throw error;
+      new Error(error);
     }
   };
 

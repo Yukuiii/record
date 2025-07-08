@@ -83,21 +83,14 @@
       </div>
     </div>
 
-    <!-- 底部输入区域 -->
+    <!-- 底部输入区域 - 测试 Element Plus -->
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
       <div class="flex items-center space-x-3">
-        <button class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-          </svg>
-        </button>
-        <div class="flex-1 bg-gray-100 rounded-full px-4 py-2">
-          <input type="text" placeholder="一句话轻松记录~"
-            class="w-full bg-transparent text-gray-600 placeholder-gray-400 outline-none">
+        <el-button type="primary" :icon="ElIconPlus" circle @click="testElementPlus" />
+        <div class="flex-1">
+          <el-input v-model="inputText" placeholder="一句话轻松记录~" />
         </div>
-        <button class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-          <Icon name="material-symbols:send-outline" size="23" class="text-white" />
-        </button>
+        <el-button type="primary" :icon="ElIconCheck" circle @click="handleSubmit" />
       </div>
     </div>
 
@@ -107,9 +100,10 @@
 </template>
 
 <script setup>
-// 使用移动端布局
+// 使用移动端布局和认证中间件
 definePageMeta({
-  layout: 'mobile'
+  layout: 'mobile',
+  middleware: 'auth'
 })
 
 // 设置页面元信息
@@ -175,6 +169,24 @@ const selectedDate = ref(null)
 // 今日收支数据
 const todayExpense = ref('0.00')
 const todayIncome = ref('0.00')
+
+// Element Plus 测试相关
+const inputText = ref('')
+
+// 测试 Element Plus 功能
+const testElementPlus = () => {
+  ElMessage.success('Element Plus 工作正常！')
+}
+
+// 处理提交
+const handleSubmit = () => {
+  if (inputText.value.trim()) {
+    ElMessage.info(`您输入了：${inputText.value}`)
+    inputText.value = ''
+  } else {
+    ElMessage.warning('请输入内容')
+  }
+}
 
 // 处理日期点击事件
 const handleDateClick = (day) => {

@@ -159,6 +159,9 @@ useHead({
   ]
 })
 
+// 使用认证组合函数
+const { register, isLoading } = useAuth()
+
 // 注册表单数据
 const registerForm = ref({
   email: '',
@@ -169,7 +172,6 @@ const registerForm = ref({
 })
 
 // 状态管理
-const isLoading = ref(false)
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 
@@ -185,39 +187,32 @@ const toggleConfirmPassword = () => {
 // 处理注册
 const handleRegister = async () => {
   // 表单验证
-  if (!registerForm.value.email || !registerForm.value.phone || 
+  if (!registerForm.value.email || !registerForm.value.phone ||
       !registerForm.value.password || !registerForm.value.confirmPassword) {
-    console.log('请填写完整的注册信息')
+    ElMessage.warning('请填写完整的注册信息')
     return
   }
 
   if (registerForm.value.password !== registerForm.value.confirmPassword) {
-    console.log('两次输入的密码不一致')
+    ElMessage.warning('两次输入的密码不一致')
     return
   }
 
   if (!registerForm.value.agreeTerms) {
-    console.log('请同意用户协议和隐私政策')
+    ElMessage.warning('请同意用户协议和隐私政策')
     return
   }
 
-  isLoading.value = true
-  
   try {
-    // 这里添加实际的注册逻辑
-    console.log('注册信息:', registerForm.value)
-    
-    // 模拟注册请求
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // 注册成功后跳转到登录页面
-    await navigateTo('/auth/login')
-    
+    await register({
+      email: registerForm.value.email,
+      phone: registerForm.value.phone,
+      password: registerForm.value.password
+    })
+    // 注册成功后会自动跳转到首页，无需额外处理
   } catch (error) {
     console.error('注册失败:', error)
-    // 这里可以添加错误提示
-  } finally {
-    isLoading.value = false
+    // 错误会通过useApi自动显示toast，无需手动处理
   }
 }
 </script>
