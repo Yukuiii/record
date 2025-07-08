@@ -20,7 +20,7 @@ export const useAuth = () => {
 
   // 基于 token 和 user 状态计算登录状态
   const isLoggedIn = computed(() => {
-    return !!token.value && !!user.value;
+    return !!token.value;
   });
 
   // 登录
@@ -54,15 +54,10 @@ export const useAuth = () => {
     try {
       const response = await api.post("/auth/register", data);
 
-      if (response.code === 200) {
-        user.value = response.data.user;
-        token.value = response.data.token;
-
-        // 跳转到首页
-        await router.push("/");
-      } else {
-        throw new Error(response.message || "注册失败");
-      }
+      user.value = response.data.user;
+      token.value = response.data.token;
+      // 跳转到首页
+      await router.push("/");
     } catch (error) {
       console.error("注册失败:", error);
       throw error; // 重新抛出错误，让组件处理
@@ -99,7 +94,6 @@ export const useAuth = () => {
       if (response.code === 200) {
         user.value = response.data;
       } else {
-        // token 可能已过期，清除本地状态
         token.value = null;
       }
     } catch (error) {
@@ -111,13 +105,13 @@ export const useAuth = () => {
   // 检查认证状态
   const checkAuth = async () => {
     // 如果有 token 但没有用户信息，尝试获取用户信息
-    if (token.value && !user.value) {
-      await fetchUser();
-    }
-    // 如果没有 token，确保清除用户状态
-    else if (!token.value && user.value) {
-      user.value = null;
-    }
+    // if (token.value && !user.value) {
+    //   await fetchUser();
+    // }
+    // // 如果没有 token，确保清除用户状态
+    // else if (!token.value && user.value) {
+    //   user.value = null;
+    // }
   };
 
   // 刷新 token

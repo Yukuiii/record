@@ -3,6 +3,7 @@
  */
 
 import { ElMessage } from "element-plus";
+import { el } from "element-plus/es/locales.mjs";
 
 export const useApi = () => {
   const config = useRuntimeConfig();
@@ -31,22 +32,17 @@ export const useApi = () => {
       },
     };
 
-    try {
-      const response = await fetch(url, requestOptions);
+    const response = await fetch(url, requestOptions);
 
-      if (response.code !== 200) {
-        const errorData = await response.json().catch(() => ({}));
-        const errorMessage = errorData.message || `HTTP ${response.status}`;
-        // 自动显示错误 toast
-        ElMessage.error(errorMessage);
-        throw new Error(errorMessage);
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      new Error(error);
+    if (!response.ok) {
+      throw new Error("网络错误");
     }
+    const data = await response.json();
+    if (data.code !== 200) {
+      ElMessage.warning(data.message);
+      throw new Error(data.message);
+    }
+    return data;
   };
 
   // GET 请求

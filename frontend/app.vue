@@ -12,4 +12,4 @@ const { checkAuth } = useAuth()
 onMounted(async () => {
   await checkAuth()
 })
-</script> 
+</script>
