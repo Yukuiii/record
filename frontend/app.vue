@@ -1,7 +1,6 @@
 <template>
   <div>
     <NuxtPage />
-    <GlobalNotification />
   </div>
 </template>
 
@@ -13,4 +12,4 @@ const { checkAuth } = useAuth()
 onMounted(async () => {
   await checkAuth()
 })
-</script>
+</script> 

@@ -13,7 +13,7 @@
     <!-- 登录表单容器 -->
     <div class="relative z-10 px-6 pt-16">
       <!-- 品牌Logo区域 -->
-      <div class="text-center mb-12">
+      <div class="text-center mb-8">
         <div
           class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-sky-600 rounded-2xl mb-6 shadow-lg">
           <Icon name="material-symbols:account-balance-wallet" size="32" class="text-white" />
@@ -22,6 +22,18 @@
           欢迎回来
         </h1>
         <p class="text-gray-500 text-lg">登录您的记账账户</p>
+      </div>
+
+      <!-- 登录提示信息 -->
+      <div v-if="loginMessage" class="mb-6">
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
+          <Icon :name="getMessageIcon(messageType)" size="20" class="text-amber-600 mt-0.5 flex-shrink-0" />
+          <div class="flex-1">
+            <p class="text-amber-800 text-sm font-medium">
+              {{ loginMessage }}
+            </p>
+          </div>
+        </div>
       </div>
 
       <!-- 登录表单卡片 -->
@@ -170,6 +182,34 @@ const togglePassword = () => {
   showPassword.value = !showPassword.value
 }
 
+// 获取重定向参数和提示信息
+const route = useRoute()
+const router = useRouter()
+
+// 从URL参数获取登录提示信息
+const loginMessage = computed(() => {
+  const message = route.query.message
+  return message ? decodeURIComponent(message) : null
+})
+
+const messageType = computed(() => {
+  return route.query.type || 'default'
+})
+
+// 根据消息类型获取图标
+const getMessageIcon = (type) => {
+  switch (type) {
+    case 'profile':
+      return 'material-symbols:person'
+    case 'records':
+      return 'material-symbols:receipt-long'
+    case 'settings':
+      return 'material-symbols:settings'
+    default:
+      return 'material-symbols:info'
+  }
+}
+
 // 处理登录
 const handleLogin = async () => {
   if (!loginForm.value.userName || !loginForm.value.password) {
@@ -181,7 +221,14 @@ const handleLogin = async () => {
       userName: loginForm.value.userName,
       password: loginForm.value.password
     })
-    // 登录成功后会自动跳转到首页，无需额外处理
+
+    // 登录成功后，检查是否有重定向参数
+    const redirectPath = route.query.redirect
+    if (redirectPath && typeof redirectPath === 'string') {
+      // 跳转到原始访问的页面
+      await router.push(decodeURIComponent(redirectPath))
+    }
+    // 如果没有重定向参数，useAuth中的login方法会自动跳转到首页
   } catch (error) {
     console.error('登录失败:', error)
     // 错误会通过useApi自动显示toast，无需手动处理
