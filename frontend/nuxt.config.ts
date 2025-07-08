@@ -22,7 +22,7 @@ export default defineNuxtConfig({
   },
 
   // CSS 配置
-  css: ["~/assets/css/main.css"],
+  css: ["~/assets/css/main.css", "element-plus/dist/index.css"],
 
   // 运行时配置
   runtimeConfig: {
@@ -31,7 +31,7 @@ export default defineNuxtConfig({
 
     // 公共配置（客户端和服务端都可用）
     public: {
-      apiBase: process.env.API_BASE || "http://localhost:3001/api",
+      apiBase: process.env.API_BASE || "http://localhost:8080/api",
     },
   },
 
@@ -45,5 +45,5 @@ export default defineNuxtConfig({
     typeCheck: false,
   },
 
-  modules: ["@nuxt/icon"],
+  modules: ["@nuxt/icon", "@element-plus/nuxt"],
 });

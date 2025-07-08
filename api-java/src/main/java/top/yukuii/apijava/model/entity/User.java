@@ -11,21 +11,20 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @Builder
-@TableName("user")
+@TableName("users")
 public class User extends BaseEntity {
 
     /**
      * 用户主键ID
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(value="id",type = IdType.AUTO)
     private Long id;
 
     /**
      * 用户唯一标识UUID
      */
-    @TableId(type = IdType.ASSIGN_UUID)
     private String userId;
-
+    
     /**
      * 用户名
      */

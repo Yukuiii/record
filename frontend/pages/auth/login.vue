@@ -2,15 +2,20 @@
   <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-sky-50 relative overflow-hidden">
     <!-- 背景装饰 -->
     <div class="absolute inset-0 overflow-hidden">
-      <div class="absolute -top-40 -right-32 w-80 h-80 bg-gradient-to-br from-blue-200/30 to-sky-200/30 rounded-full blur-3xl"></div>
-      <div class="absolute -bottom-40 -left-32 w-80 h-80 bg-gradient-to-tr from-cyan-200/30 to-blue-200/30 rounded-full blur-3xl"></div>
+      <div
+        class="absolute -top-40 -right-32 w-80 h-80 bg-gradient-to-br from-blue-200/30 to-sky-200/30 rounded-full blur-3xl">
+      </div>
+      <div
+        class="absolute -bottom-40 -left-32 w-80 h-80 bg-gradient-to-tr from-cyan-200/30 to-blue-200/30 rounded-full blur-3xl">
+      </div>
     </div>
 
     <!-- 登录表单容器 -->
     <div class="relative z-10 px-6 pt-16">
       <!-- 品牌Logo区域 -->
       <div class="text-center mb-12">
-        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-sky-600 rounded-2xl mb-6 shadow-lg">
+        <div
+          class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-sky-600 rounded-2xl mb-6 shadow-lg">
           <Icon name="material-symbols:account-balance-wallet" size="32" class="text-white" />
         </div>
         <h1 class="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-3">
@@ -28,8 +33,9 @@
               邮箱或手机号
             </label>
             <div class="relative">
-              <Icon name="material-symbols:person" size="20" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input v-model="loginForm.username" type="text" placeholder="请输入邮箱或手机号"
+              <Icon name="material-symbols:person" size="20"
+                class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input v-model="loginForm.userName" type="text" placeholder="请输入邮箱或手机号"
                 class="w-full pl-12 pr-4 py-4 bg-gray-50/50 border border-gray-200/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 focus:bg-white transition-all duration-200"
                 required />
             </div>
@@ -41,7 +47,8 @@
               密码
             </label>
             <div class="relative">
-              <Icon name="material-symbols:lock" size="20" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <Icon name="material-symbols:lock" size="20"
+                class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input v-model="loginForm.password" :type="showPassword ? 'text' : 'password'" placeholder="请输入密码"
                 class="w-full pl-12 pr-14 py-4 bg-gray-50/50 border border-gray-200/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 focus:bg-white transition-all duration-200"
                 required />
@@ -60,11 +67,14 @@
                 class="w-5 h-5 text-blue-600 border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:ring-2" />
               <span class="ml-3 text-sm text-gray-600 group-hover:text-gray-800 transition-colors">记住我</span>
             </label>
-            <button type="button" @click="handleForgotPassword" 
+            <button type="button" @click="handleForgotPassword"
               class="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
               忘记密码？
             </button>
           </div>
+
+          <!-- 错误提示 -->
+          <!-- 已移除，错误信息通过toast自动显示 -->
 
           <!-- 登录按钮 -->
           <button type="submit" :disabled="isLoading"
@@ -85,8 +95,7 @@
       <div class="text-center mt-8">
         <p class="text-gray-600">
           还没有账户？
-          <NuxtLink to="/auth/register" 
-            class="font-semibold text-blue-600 hover:text-blue-700 transition-colors ml-1">
+          <NuxtLink to="/auth/register" class="font-semibold text-blue-600 hover:text-blue-700 transition-colors ml-1">
             立即注册
           </NuxtLink>
         </p>
@@ -107,14 +116,16 @@
           <!-- 微信登录 -->
           <button @click="handleWechatLogin"
             class="flex items-center justify-center px-6 py-4 bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-2xl hover:bg-white/80 hover:shadow-md transition-all duration-200 group">
-            <Icon name="material-symbols:wechat" size="24" class="text-green-500 mr-3 group-hover:scale-110 transition-transform" />
+            <Icon name="material-symbols:wechat" size="24"
+              class="text-green-500 mr-3 group-hover:scale-110 transition-transform" />
             <span class="text-sm font-medium text-gray-700">微信</span>
           </button>
 
           <!-- QQ登录 -->
           <button @click="handleQQLogin"
             class="flex items-center justify-center px-6 py-4 bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-2xl hover:bg-white/80 hover:shadow-md transition-all duration-200 group">
-            <Icon name="material-symbols:chat" size="24" class="text-blue-500 mr-3 group-hover:scale-110 transition-transform" />
+            <Icon name="material-symbols:chat" size="24"
+              class="text-blue-500 mr-3 group-hover:scale-110 transition-transform" />
             <span class="text-sm font-medium text-gray-700">QQ</span>
           </button>
         </div>
@@ -141,15 +152,17 @@ useHead({
   ]
 })
 
+// 使用认证组合函数
+const { login, isLoading } = useAuth()
+
 // 登录表单数据
 const loginForm = ref({
-  username: '',
+  userName: '',
   password: '',
   remember: false
 })
 
 // 状态管理
-const isLoading = ref(false)
 const showPassword = ref(false)
 
 // 切换密码显示
@@ -159,29 +172,19 @@ const togglePassword = () => {
 
 // 处理登录
 const handleLogin = async () => {
-  if (!loginForm.value.username || !loginForm.value.password) {
-    // 这里可以添加表单验证提示
-    console.log('请填写完整的登录信息')
+  if (!loginForm.value.userName || !loginForm.value.password) {
     return
   }
 
-  isLoading.value = true
-
   try {
-    // 这里添加实际的登录逻辑
-    console.log('登录信息:', loginForm.value)
-
-    // 模拟登录请求
-    await new Promise(resolve => setTimeout(resolve, 2000))
-
-    // 登录成功后跳转到首页
-    await navigateTo('/')
-
+    await login({
+      userName: loginForm.value.userName,
+      password: loginForm.value.password
+    })
+    // 登录成功后会自动跳转到首页，无需额外处理
   } catch (error) {
     console.error('登录失败:', error)
-    // 这里可以添加错误提示
-  } finally {
-    isLoading.value = false
+    // 错误会通过useApi自动显示toast，无需手动处理
   }
 }
 

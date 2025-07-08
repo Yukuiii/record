@@ -6,11 +6,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
+import top.yukuii.apijava.common.BusinessException;
 import top.yukuii.apijava.mapper.TransactionMapper;
+import top.yukuii.apijava.model.dto.CreateTransactionDTO;
 import top.yukuii.apijava.model.entity.Transaction;
 import top.yukuii.apijava.model.vo.GetTransactionVO;
+import top.yukuii.apijava.util.TokenManager;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +22,7 @@ public class TransactionService {
 
     private final TransactionMapper transactionMapper;
 
-    public Page<GetTransactionVO> getTransactionsPage(String type, Long categoryId, String startDate, String endDate, 
+    public Page<GetTransactionVO> getTransactionsPage(String type, Long categoryId, Long startDate, Long endDate, 
                                                       String keyword, String sort, String order, Integer page, Integer pageSize) {
         
         // 设置默认分页参数
@@ -41,11 +45,11 @@ public class TransactionService {
         }
         
         // 日期范围过滤
-        if (StrUtil.isNotBlank(startDate)) {
-            wrapper.ge(Transaction::getTransactionDate, Long.parseLong(startDate));
+        if (startDate != null) {
+            wrapper.ge(Transaction::getTransactionDate, startDate);
         }
-        if (StrUtil.isNotBlank(endDate)) {
-            wrapper.le(Transaction::getTransactionDate, Long.parseLong(endDate));
+        if (endDate != null) {
+            wrapper.le(Transaction::getTransactionDate, endDate);
         }
         
         // 关键词搜索
@@ -91,5 +95,24 @@ public class TransactionService {
             .toList());
         
         return voPage;
+    }
+
+    /**
+     * 创建账单记录
+     * @param createTransactionDTO
+     */
+    public void createTransaction(CreateTransactionDTO createTransactionDTO){        
+        if(ObjectUtil.isNull(createTransactionDTO)){
+            throw new BusinessException("交易数据不能为空");
+        }
+
+        Transaction transaction = new Transaction();
+        BeanUtil.copyProperties(createTransactionDTO, transaction);
+        transaction.setUserId(Long.parseLong(TokenManager.getCurrentUserId()));
+        transaction.setTransactionDate(System.currentTimeMillis());
+        transaction.setTags(createTransactionDTO.getTags());
+        transaction.setCreateBy(Long.parseLong(TokenManager.getCurrentUserId()));
+        transaction.setCreateTime(System.currentTimeMillis());
+        transactionMapper.insert(transaction);
     }
 }

@@ -1,19 +1,23 @@
 package top.yukuii.apijava.model.entity;
 
+import java.math.BigDecimal;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.math.BigDecimal;
+import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
 @Builder
 @TableName("transaction")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Transaction extends BaseEntity {
 
     /**
